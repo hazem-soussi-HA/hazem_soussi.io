@@ -1,6 +1,5 @@
 import streamlit as st
 import os
-from transformers import pipeline
 
 st.set_page_config(page_title="Hazem Soussi - Cloud & DevSecOps Portfolio", page_icon="🚀", layout="wide")
 
@@ -230,46 +229,26 @@ if page == "AI Assistant":
     st.header("🤖 AI Assistant")
     st.write("Ask me anything about Hazem's expertise, experience, or projects!")
 
-    bio = """
-    Hazem Soussi is a dynamic and results-driven Cloud Computing and DevOps Engineer with over 5 years of professional experience in implementing, automating, and optimizing complex IT infrastructures. Hazem specializes in cloud orchestration, containerization, CI/CD pipelines, and system automation, with a proven ability to design scalable and secure infrastructures for both enterprise and academic projects.
-
-    Core Competencies:
-    - Cloud Platforms: Expert in OpenStack, AWS, Microsoft Azure, and Proxmox.
-    - DevOps & Automation: Skilled in Kubernetes, Docker, Ansible, Terraform, Jenkins.
-    - System Administration: Advanced Linux knowledge.
-    - Programming & Scripting: Proficient in Python, Bash, Java, C/C#.
-    - Monitoring & Security: Prometheus, Grafana, intrusion detection.
-    - Full-Stack & Web Development: React.js, Angular, Symfony, Flask, Flutter.
-    - Databases: MySQL, MongoDB, Oracle, PL/SQL.
-
-    Professional Highlights:
-    - Designed highly available Kubernetes infrastructures.
-    - Implemented CI/CD pipelines with Jenkins, Docker, etc.
-    - Developed private cloud solutions with OpenStack and Proxmox.
-    - Led full-stack projects on Microsoft Azure.
-    - Integrated security monitoring systems.
-
-    Open-Source & Community: Actively contributes to open-source.
-
-    Vision: Bridge gap between cloud infrastructure and user-friendly solutions.
-    """
-
-    @st.cache_resource
-    def load_generator():
-        return pipeline('text-generation', model='distilgpt2')
-
-    generator = load_generator()
-
     question = st.text_input("Your question:")
     if st.button("Ask AI"):
         if question:
-            prompt = bio + f"\n\nQuestion: {question}\nAnswer:"
-            with st.spinner("Generating response..."):
-                result = generator(prompt, max_length=300, num_return_sequences=1, temperature=0.7)
-                response = result[0]['generated_text']
-                # Extract answer part
-                answer_start = response.find("Answer:") + len("Answer:")
-                answer = response[answer_start:].strip()
+            with st.spinner("Thinking..."):
+                # Simple rule-based responses
+                q_lower = question.lower()
+                if "cloud" in q_lower or "aws" in q_lower or "azure" in q_lower:
+                    answer = "Hazem is an expert in cloud platforms including AWS, Azure, OpenStack, and Proxmox. He has extensive experience in deploying private and hybrid cloud environments, designing scalable infrastructures, and optimizing cloud resources for enterprise and academic projects."
+                elif "devops" in q_lower or "ci/cd" in q_lower or "jenkins" in q_lower:
+                    answer = "Hazem specializes in DevOps practices, including CI/CD pipeline integration with Jenkins, Docker, GitHub, SonarQube, and Maven. He has implemented automated deployment processes for streamlined development and reliable application delivery."
+                elif "kubernetes" in q_lower or "docker" in q_lower:
+                    answer = "Hazem has designed and deployed highly available Kubernetes infrastructures with automated scaling and monitoring. He is skilled in containerization using Docker and orchestration for complex IT systems."
+                elif "security" in q_lower or "monitoring" in q_lower:
+                    answer = "In terms of security and monitoring, Hazem has experience with Prometheus, Grafana, intrusion detection systems, and implementing security monitoring, alerting, and compliance in cloud infrastructures."
+                elif "programming" in q_lower or "python" in q_lower:
+                    answer = "Hazem is proficient in Python, Bash, Shell scripting, Java, and C/C#. He uses these for automation, orchestration, and developing full-stack applications."
+                elif "experience" in q_lower or "projects" in q_lower:
+                    answer = "With over 5 years of experience, Hazem has led projects in cloud orchestration, full-stack development, and DevOps automation. Check out his GitHub for specific projects like MERN Stack apps, DevSecOps pipelines, and cloud deployments."
+                else:
+                    answer = "Hazem is a Cloud Computing and DevOps Engineer specializing in scalable infrastructures, automation, and security. For specific questions about his skills, projects, or experience, try asking about cloud, DevOps, Kubernetes, or security!"
                 st.write("**AI Response:**", answer)
         else:
             st.warning("Please enter a question.")
