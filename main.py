@@ -227,26 +227,33 @@ if page == "Projects":
             "desc": "Full-stack web app with cloud deployment on AWS, featuring secure authentication and scalable architecture.",
             "link": "https://github.com/hazem-soussi-HA/MERN-Stack-Tutorial",
             "tech": "React, Node.js, MongoDB, AWS",
-            "image": "https://via.placeholder.com/300x200?text=MERN+Stack"
+            "image": "https://images.unsplash.com/photo-1637937459053-c788742455be?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2xvdWQlMjBjb21wdXRpbmclMjBkZXZlbG9wbWVudHxlbnwwfHwwfHx8MA%3D%3D&fm=jpg&q=60&w=3000"
         },
         {
             "title": "DevSecOps CI/CD Pipeline",
             "desc": "Automated pipeline with security scanning, vulnerability assessment, and compliance checks for containerized apps.",
             "link": "https://github.com/hazem-soussi-HA/Kali-Linux-Container-on-Proxmox",
             "tech": "Jenkins, Docker, Kubernetes, OWASP ZAP",
-            "image": "https://via.placeholder.com/300x200?text=DevSecOps"
+            "image": "https://plus.unsplash.com/premium_photo-1683121079680-6f3f756f9f27?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fGNsb3VkJTIwY29tcHV0aW5nJTIwZGV2ZWxvcG1lbnR8ZW58MHx8MHx8fDA%3D&fm=jpg&q=60&w=3000"
         },
         {
             "title": "Cloud AI Model Deployment",
             "desc": "Serverless deployment of LLMs on GCP with auto-scaling, monitoring, and cost optimization.",
             "link": "https://github.com/hazem-soussi-HA/ollama",
             "tech": "Python, GCP, Terraform, Prometheus",
-            "image": "https://via.placeholder.com/300x200?text=AI+Deployment"
+            "image": "https://plus.unsplash.com/premium_photo-1714618828448-abf8732500c6?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8Y2xvdWQlMjBjb21wdXRpbmclMjBkZXZlbG9wbWVudHxlbnwwfHwwfHx8MA%3D%3D&fm=jpg&q=60&w=3000"
         }
     ]
 
+    # Search functionality
+    search_term = st.text_input("Search projects by title or technology:", placeholder="e.g., React, AWS, Kubernetes")
+    if search_term:
+        filtered_projects = [p for p in projects if search_term.lower() in p['title'].lower() or search_term.lower() in p['tech'].lower()]
+    else:
+        filtered_projects = projects
+
     cols = st.columns(3)
-    for idx, proj in enumerate(projects):
+    for idx, proj in enumerate(filtered_projects):
         with cols[idx % 3]:
             st.markdown(f"""
             <div style="border: 1px solid #ddd; border-radius: 10px; padding: 15px; margin: 10px 0; box-shadow: 0 4px 8px rgba(0,0,0,0.1); transition: transform 0.3s;">
