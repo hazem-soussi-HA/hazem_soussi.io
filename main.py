@@ -1,11 +1,12 @@
 import streamlit as st
 import os
+from transformers import pipeline
 
 st.set_page_config(page_title="Hazem Soussi - Cloud & DevSecOps Portfolio", page_icon="🚀", layout="wide")
 
 # Sidebar Navigation
 st.sidebar.title("Navigation")
-page = st.sidebar.radio("Go to", ["Home", "About", "Skills", "Projects", "Experience", "Contact"])
+page = st.sidebar.radio("Go to", ["Home", "About", "Skills", "Projects", "Experience", "Contact", "AI Assistant"])
 
 # Hero Section
 if page == "Home":
@@ -85,7 +86,31 @@ if page == "About":
     with col1:
         st.image("https://avatars.githubusercontent.com/u/64667872?v=4", width=200)
     with col2:
-        st.write("Hi, I'm Hazem Soussi, a specialist in Cloud computing architecture and DevSecOps. I help businesses scale securely with modern DevOps practices, integrating security from the start, and full-stack development.")
+        st.write("""
+        Hazem Soussi is a dynamic and results-driven Cloud Computing and DevOps Engineer with over 5 years of professional experience in implementing, automating, and optimizing complex IT infrastructures. Hazem specializes in cloud orchestration, containerization, CI/CD pipelines, and system automation, with a proven ability to design scalable and secure infrastructures for both enterprise and academic projects.
+
+        **Core Competencies:**
+        - **Cloud Platforms:** Expert in OpenStack, AWS, Microsoft Azure, and Proxmox, with hands-on experience in deploying private and hybrid cloud environments.
+        - **DevOps & Automation:** Skilled in Kubernetes, Docker, Ansible, Terraform, Jenkins, and CI/CD pipeline integration.
+        - **System Administration:** Advanced Linux knowledge (Ubuntu, RedHat), network configuration, security management.
+        - **Programming & Scripting:** Proficient in Python, Bash, Shell scripting, Java, C/C#.
+        - **Monitoring & Security:** Experience with Prometheus, Grafana, intrusion detection systems.
+        - **Full-Stack & Web Development:** Knowledgeable in React.js, Angular, Symfony, Flask, Flutter.
+        - **Databases:** Skilled in MySQL, MongoDB, Oracle, PL/SQL.
+
+        **Professional Highlights:**
+        - Designed and deployed highly available Kubernetes infrastructures with automated scaling and monitoring.
+        - Implemented CI/CD pipelines integrating Jenkins, Docker, GitHub, SonarQube, and Maven.
+        - Developed private cloud solutions and orchestrated OpenStack and Proxmox environments.
+        - Led full-stack projects deploying web and mobile applications on Microsoft Azure.
+        - Integrated security monitoring, alerting, and intrusion detection systems.
+
+        **Open-Source & Community Engagement:**
+        Hazem actively contributes to the open-source community by sharing projects, frameworks, and tutorials.
+
+        **Vision:**
+        To bridge the gap between complex cloud infrastructure and practical, user-friendly solutions, delivering innovative, scalable, and secure systems while fostering open collaboration and knowledge sharing.
+        """)
         st.write("**Contact:** +216 98 454 001 | hazem.soussi@gmail.com")
 
 if page == "Skills":
@@ -200,3 +225,51 @@ if page == "Contact":
                     st.success("Thank you! Your message has been sent. I'll get back to you soon.")
                 else:
                     st.error("Please fill in all required fields.")
+
+if page == "AI Assistant":
+    st.header("🤖 AI Assistant")
+    st.write("Ask me anything about Hazem's expertise, experience, or projects!")
+
+    bio = """
+    Hazem Soussi is a dynamic and results-driven Cloud Computing and DevOps Engineer with over 5 years of professional experience in implementing, automating, and optimizing complex IT infrastructures. Hazem specializes in cloud orchestration, containerization, CI/CD pipelines, and system automation, with a proven ability to design scalable and secure infrastructures for both enterprise and academic projects.
+
+    Core Competencies:
+    - Cloud Platforms: Expert in OpenStack, AWS, Microsoft Azure, and Proxmox.
+    - DevOps & Automation: Skilled in Kubernetes, Docker, Ansible, Terraform, Jenkins.
+    - System Administration: Advanced Linux knowledge.
+    - Programming & Scripting: Proficient in Python, Bash, Java, C/C#.
+    - Monitoring & Security: Prometheus, Grafana, intrusion detection.
+    - Full-Stack & Web Development: React.js, Angular, Symfony, Flask, Flutter.
+    - Databases: MySQL, MongoDB, Oracle, PL/SQL.
+
+    Professional Highlights:
+    - Designed highly available Kubernetes infrastructures.
+    - Implemented CI/CD pipelines with Jenkins, Docker, etc.
+    - Developed private cloud solutions with OpenStack and Proxmox.
+    - Led full-stack projects on Microsoft Azure.
+    - Integrated security monitoring systems.
+
+    Open-Source & Community: Actively contributes to open-source.
+
+    Vision: Bridge gap between cloud infrastructure and user-friendly solutions.
+    """
+
+    @st.cache_resource
+    def load_generator():
+        return pipeline('text-generation', model='distilgpt2')
+
+    generator = load_generator()
+
+    question = st.text_input("Your question:")
+    if st.button("Ask AI"):
+        if question:
+            prompt = bio + f"\n\nQuestion: {question}\nAnswer:"
+            with st.spinner("Generating response..."):
+                result = generator(prompt, max_length=300, num_return_sequences=1, temperature=0.7)
+                response = result[0]['generated_text']
+                # Extract answer part
+                answer_start = response.find("Answer:") + len("Answer:")
+                answer = response[answer_start:].strip()
+                st.write("**AI Response:**", answer)
+        else:
+            st.warning("Please enter a question.")
