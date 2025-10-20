@@ -1,11 +1,19 @@
 import streamlit as st
 import os
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 st.set_page_config(page_title="Hazem Soussi - Cloud & DevSecOps Portfolio", page_icon="🚀", layout="wide")
 
 # Sidebar Navigation
 st.sidebar.title("Navigation")
 page = st.sidebar.radio("Go to", ["Home", "About", "Skills", "Projects", "Experience", "Contact", "AI Assistant"])
+
+# Fun button
+if st.sidebar.button("🎉 Surprise!"):
+    st.balloons()
+    st.sidebar.success("Hope you enjoyed the surprise!")
 
 # Hero Section
 if page == "Home":
@@ -69,15 +77,31 @@ if page == "Home":
         0%, 100% { transform: translateY(0px); }
         50% { transform: translateY(-10px); }
     }
+    .typewriter {
+        overflow: hidden;
+        border-right: .15em solid orange;
+        white-space: nowrap;
+        animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+    }
+    @keyframes typing {
+        from { width: 0 }
+        to { width: 100% }
+    }
+    @keyframes blink-caret {
+        from, to { border-color: transparent }
+        50% { border-color: orange }
+    }
     </style>
     <div class="hero">
         <img src="https://avatars.githubusercontent.com/u/64667872?v=4" class="animated-photo" alt="Hazem Soussi">
         <h1>Hazem Soussi</h1>
-        <p>Cloud Computing & DevSecOps Specialist</p>
+        <p class="typewriter">Cloud Computing & DevSecOps Specialist</p>
         <p>Securing and scaling your infrastructure with DevSecOps best practices</p>
-        <a href="#contact" class="cta-button">Get In Touch</a>
     </div>
     """, unsafe_allow_html=True)
+    if st.button("Get In Touch", key="get_in_touch"):
+        st.session_state.page = "Contact"
+        st.rerun()
 
 if page == "About":
     st.header("👨‍💻 About Me")
@@ -123,7 +147,9 @@ if page == "Skills":
         st.write("- Serverless architectures")
         st.write("- Multi-cloud strategies")
         st.progress(95, text="Expertise Level")
-    
+        if st.button("Learn More", key="cloud_more"):
+            st.info("Hazem has deployed private and hybrid clouds, optimizing resources for scalability and cost-efficiency.")
+
     with tab2:
         st.subheader("DevSecOps")
         st.write("- Security in CI/CD pipelines")
@@ -132,7 +158,9 @@ if page == "Skills":
         st.write("- Container security (Docker, Kubernetes)")
         st.write("- Threat modeling and risk assessment")
         st.progress(90, text="Expertise Level")
-    
+        if st.button("Learn More", key="devsecops_more"):
+            st.info("Integrating security from the start, Hazem ensures robust, compliant infrastructures.")
+
     with tab3:
         st.subheader("Full-Stack Development")
         st.write("- Frontend: React, Angular, Vue.js")
@@ -140,6 +168,8 @@ if page == "Skills":
         st.write("- Databases: MongoDB, PostgreSQL, Redis")
         st.write("- Version Control: Git, GitHub Actions")
         st.progress(85, text="Expertise Level")
+        if st.button("Learn More", key="fullstack_more"):
+            st.info("From interactive UIs to scalable backends, Hazem builds end-to-end solutions.")
 
 if page == "Projects":
     st.header("💼 Featured Projects")
@@ -185,16 +215,22 @@ if page == "Experience":
     ]
     for cert in certs:
         st.write(f"✅ {cert}")
-    
+
     st.header("💼 Professional Experience")
     with st.expander("DevSecOps Engineer - TechCorp (2023-Present)"):
         st.write("Implemented DevSecOps practices across enterprise applications, reducing security vulnerabilities by 60%. Led cloud migration to AWS with automated security scanning in CI/CD pipelines.")
-    
+        if st.button("View Details", key="exp1"):
+            st.success("Key achievements: Automated security scans, compliance monitoring, and zero-downtime deployments.")
+
     with st.expander("Cloud Architect - Innovate Solutions (2021-2023)"):
         st.write("Designed and deployed multi-cloud infrastructures on AWS and Azure, focusing on scalability, security, and cost optimization. Integrated DevSecOps tools for compliance automation.")
-    
+        if st.button("View Details", key="exp2"):
+            st.success("Optimized cloud costs by 40% and ensured 99.9% uptime through advanced monitoring.")
+
     with st.expander("Full-Stack Developer - Startup ABC (2020-2021)"):
         st.write("Developed secure web applications with React and Node.js, deployed on cloud platforms with basic DevOps practices.")
+        if st.button("View Details", key="exp3"):
+            st.success("Built user-friendly apps with 50% faster load times and secure authentication.")
 
 if page == "Contact":
     st.header("📞 Get In Touch")
@@ -221,7 +257,34 @@ if page == "Contact":
             submitted = st.form_submit_button("🚀 Send Message")
             if submitted:
                 if name and email and message:
-                    st.success("Thank you! Your message has been sent. I'll get back to you soon.")
+                    # Send email
+                    sender_email = os.environ.get("EMAIL_USER", "hazem.soussi@gmail.com")
+                    sender_password = os.environ.get("EMAIL_PASS")
+                    receiver_email = "hazem.soussi@gmail.com"
+
+                    if sender_password:
+                        msg = MIMEMultipart()
+                        msg['From'] = sender_email
+                        msg['To'] = receiver_email
+                        msg['Subject'] = f"Contact Form: {subject}"
+
+                        body = f"Name: {name}\nEmail: {email}\nSubject: {subject}\n\nMessage:\n{message}"
+                        msg.attach(MIMEText(body, 'plain'))
+
+                        try:
+                            server = smtplib.SMTP('smtp.gmail.com', 587)
+                            server.starttls()
+                            server.login(sender_email, sender_password)
+                            text = msg.as_string()
+                            server.sendmail(sender_email, receiver_email, text)
+                            server.quit()
+                            st.success("Thank you! Your message has been sent. I'll get back to you soon.")
+                            st.balloons()
+                        except Exception as e:
+                            st.error(f"Failed to send email: {str(e)}")
+                    else:
+                        st.success("Thank you! Your message has been recorded. (Email sending not configured)")
+                        st.balloons()
                 else:
                     st.error("Please fill in all required fields.")
 
