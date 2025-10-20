@@ -3,6 +3,17 @@ import os
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+import requests
+
+API_BASE_URL = "http://localhost:8000"
+
+def fetch_data(endpoint):
+    try:
+        response = requests.get(f"{API_BASE_URL}{endpoint}")
+        response.raise_for_status()
+        return response.json()
+    except:
+        return None
 
 st.set_page_config(page_title="Hazem Soussi - Cloud & DevSecOps Portfolio", page_icon="🚀", layout="wide")
 
@@ -210,7 +221,7 @@ if page == "Projects":
     st.header("💼 Featured Projects")
     st.markdown("Explore my portfolio of cloud-native and DevSecOps solutions:")
 
-    projects = [
+    projects = fetch_data("/projects") or [
         {
             "title": "MERN Stack SaaS Platform",
             "desc": "Full-stack web app with cloud deployment on AWS, featuring secure authentication and scalable architecture.",
@@ -250,7 +261,7 @@ if page == "Projects":
 
 if page == "Experience":
     st.header("🏆 Certifications")
-    certs = [
+    certs = fetch_data("/certifications") or [
         "AWS Certified Solutions Architect",
         "Certified Kubernetes Administrator (CKA)",
         "Docker Certified Associate",
@@ -259,27 +270,34 @@ if page == "Experience":
         "Scrum Master Certification"
     ]
     for cert in certs:
-        st.write(f"✅ {cert}")
+        st.write(f"✅ {cert['name'] if isinstance(cert, dict) else cert}")
 
     st.header("💼 Professional Experience")
-    with st.expander("DevSecOps Engineer - TechCorp (2023-Present)"):
-        st.write("Implemented DevSecOps practices across enterprise applications, reducing security vulnerabilities by 60%. Led cloud migration to AWS with automated security scanning in CI/CD pipelines.")
-        if st.button("View Details", key="exp1"):
-            st.success("Key achievements: Automated security scans, compliance monitoring, and zero-downtime deployments.")
-
-    with st.expander("Cloud Architect - Innovate Solutions (2021-2023)"):
-        st.write("Designed and deployed multi-cloud infrastructures on AWS and Azure, focusing on scalability, security, and cost optimization. Integrated DevSecOps tools for compliance automation.")
-        if st.button("View Details", key="exp2"):
-            st.success("Optimized cloud costs by 40% and ensured 99.9% uptime through advanced monitoring.")
-
-    with st.expander("Full-Stack Developer - Startup ABC (2020-2021)"):
-        st.write("Developed secure web applications with React and Node.js, deployed on cloud platforms with basic DevOps practices.")
-        if st.button("View Details", key="exp3"):
-            st.success("Built user-friendly apps with 50% faster load times and secure authentication.")
+    experiences = fetch_data("/experiences") or [
+        {
+            "title": "DevSecOps Engineer - TechCorp (2023-Present)",
+            "description": "Implemented DevSecOps practices across enterprise applications, reducing security vulnerabilities by 60%. Led cloud migration to AWS with automated security scanning in CI/CD pipelines."
+        },
+        {
+            "title": "Cloud Architect - Innovate Solutions (2021-2023)",
+            "description": "Designed and deployed multi-cloud infrastructures on AWS and Azure, focusing on scalability, security, and cost optimization. Integrated DevSecOps tools for compliance automation."
+        },
+        {
+            "title": "Full-Stack Developer - Startup ABC (2020-2021)",
+            "description": "Developed secure web applications with React and Node.js, deployed on cloud platforms with basic DevOps practices."
+        }
+    ]
+    for i, exp in enumerate(experiences):
+        with st.expander(exp["title"]):
+            st.write(exp["description"])
+            if st.button("View Details", key=f"exp{i}"):
+                st.success("Key achievements: Automated security scans, compliance monitoring, and zero-downtime deployments." if i == 0 else
+                           "Optimized cloud costs by 40% and ensured 99.9% uptime through advanced monitoring." if i == 1 else
+                           "Built user-friendly apps with 50% faster load times and secure authentication.")
 
 if page == "Testimonials":
     st.header("💬 What Clients Say")
-    testimonials = [
+    testimonials = fetch_data("/testimonials") or [
         {
             "name": "John Doe",
             "role": "CTO at TechCorp",
@@ -383,7 +401,7 @@ if page == "Contact":
             st.markdown('</div><div class="form-input">', unsafe_allow_html=True)
             message = st.text_area("Message", placeholder="Tell me about your project...", label_visibility="collapsed")
             st.markdown('</div>', unsafe_allow_html=True)
-            submitted = st.form_submit_button("🚀 Send Message", use_container_width=True)
+            submitted = st.form_submit_button("🚀 Send Message")
             if submitted:
                 if name and email and message:
                     # Send email
