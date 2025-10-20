@@ -54,8 +54,24 @@ if page == "Home":
         transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(255,107,107,0.6);
     }
+    .animated-photo {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        border: 5px solid white;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        animation: float 3s ease-in-out infinite;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+    }
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+    }
     </style>
     <div class="hero">
+        <img src="https://avatars.githubusercontent.com/u/64667872?v=4" class="animated-photo" alt="Hazem Soussi">
         <h1>Hazem Soussi</h1>
         <p>Cloud Computing & DevSecOps Specialist</p>
         <p>Securing and scaling your infrastructure with DevSecOps best practices</p>
@@ -123,12 +139,6 @@ if page == "Projects":
             "desc": "Serverless deployment of LLMs on GCP with auto-scaling, monitoring, and cost optimization.",
             "link": "https://github.com/hazem-soussi-HA/ollama",
             "tech": "Python, GCP, Terraform, Prometheus"
-        },
-        {
-            "title": "Multi-Cloud Infrastructure",
-            "desc": "Hybrid cloud setup with AWS and Azure, implementing disaster recovery and cross-cloud security policies.",
-            "link": "#",
-            "tech": "Terraform, Ansible, Vault"
         }
     ]
     
