@@ -147,7 +147,7 @@ if page == "Projects":
             st.write(proj['desc'])
             st.write(f"**Technologies:** {proj['tech']}")
             if proj['link'] != "#":
-                st.link_button("View on GitHub", proj['link'], key=f"link_{idx}")
+                st.link_button("View on GitHub", proj['link'])
 
 if page == "Experience":
     st.header("🏆 Certifications")
@@ -186,7 +186,7 @@ if page == "Contact":
         if os.path.exists(cv_path):
             with open(cv_path, "rb") as f:
                 cv_data = f.read()
-            st.download_button("📄 Download CV", cv_data, file_name="Hazem_Soussi_CV.docx", mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+            st.download_button("📄 Download CV", cv_data, file_name="Hazem_Soussi_CV.docx")
     with col2:
         st.subheader("Send a Message")
         with st.form("contact_form"):
