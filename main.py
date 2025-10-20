@@ -4,6 +4,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import requests
+import plotly.graph_objects as go
 
 API_BASE_URL = "http://localhost:8000"
 
@@ -16,6 +17,16 @@ def fetch_data(endpoint):
         return None
 
 st.set_page_config(page_title="Cloud Computing & DevSecOps Specialist", page_icon="🚀", layout="wide")
+
+# Global Typography
+st.markdown("""
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+body, .stApp {
+    font-family: 'Inter', sans-serif;
+}
+</style>
+""", unsafe_allow_html=True)
 
 # Dark Mode Toggle
 if 'dark_mode' not in st.session_state:
@@ -185,14 +196,29 @@ if page == "About":
 if page == "Skills":
     st.header("🚀 Expertise & Skills")
     tab1, tab2, tab3 = st.tabs(["Cloud Computing", "DevSecOps", "Full-Stack Development"])
-    
+
     with tab1:
         st.subheader("Cloud Computing")
         st.write("- AWS, Azure, GCP platforms")
         st.write("- Infrastructure as Code (Terraform, CloudFormation)")
         st.write("- Serverless architectures")
         st.write("- Multi-cloud strategies")
-        st.progress(95, text="Expertise Level")
+
+        # Skills chart
+        fig = go.Figure(data=[go.Bar(
+            x=['AWS', 'Azure', 'GCP', 'Terraform', 'CloudFormation', 'Serverless'],
+            y=[95, 90, 85, 90, 85, 88],
+            marker_color=['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F']
+        )])
+        fig.update_layout(
+            title="Cloud Computing Skills Proficiency",
+            xaxis_title="Skills",
+            yaxis_title="Proficiency (%)",
+            yaxis_range=[0, 100],
+            template="plotly_white"
+        )
+        st.plotly_chart(fig, use_container_width=True)
+
         if st.button("Learn More", key="cloud_more"):
             st.info("Hazem has deployed private and hybrid clouds, optimizing resources for scalability and cost-efficiency.")
 
@@ -203,7 +229,22 @@ if page == "Skills":
         st.write("- Compliance automation (SOC2, GDPR)")
         st.write("- Container security (Docker, Kubernetes)")
         st.write("- Threat modeling and risk assessment")
-        st.progress(90, text="Expertise Level")
+
+        # Skills chart
+        fig = go.Figure(data=[go.Bar(
+            x=['CI/CD Security', 'Vulnerability Scanning', 'Compliance', 'Container Security', 'Threat Modeling'],
+            y=[90, 88, 85, 92, 87],
+            marker_color=['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8']
+        )])
+        fig.update_layout(
+            title="DevSecOps Skills Proficiency",
+            xaxis_title="Skills",
+            yaxis_title="Proficiency (%)",
+            yaxis_range=[0, 100],
+            template="plotly_white"
+        )
+        st.plotly_chart(fig, use_container_width=True)
+
         if st.button("Learn More", key="devsecops_more"):
             st.info("Integrating security from the start, Hazem ensures robust, compliant infrastructures.")
 
@@ -213,7 +254,22 @@ if page == "Skills":
         st.write("- Backend: Node.js, Python, Java, Go")
         st.write("- Databases: MongoDB, PostgreSQL, Redis")
         st.write("- Version Control: Git, GitHub Actions")
-        st.progress(85, text="Expertise Level")
+
+        # Skills chart
+        fig = go.Figure(data=[go.Bar(
+            x=['React', 'Node.js', 'Python', 'MongoDB', 'PostgreSQL', 'Git'],
+            y=[85, 88, 90, 87, 85, 95],
+            marker_color=['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F']
+        )])
+        fig.update_layout(
+            title="Full-Stack Development Skills Proficiency",
+            xaxis_title="Skills",
+            yaxis_title="Proficiency (%)",
+            yaxis_range=[0, 100],
+            template="plotly_white"
+        )
+        st.plotly_chart(fig, use_container_width=True)
+
         if st.button("Learn More", key="fullstack_more"):
             st.info("From interactive UIs to scalable backends, Hazem builds end-to-end solutions.")
 
@@ -463,5 +519,14 @@ if page == "AI Assistant":
                 else:
                     answer = "Hazem is a Cloud Computing and DevOps Engineer specializing in scalable infrastructures, automation, and security. For specific questions about his skills, projects, or experience, try asking about cloud, DevOps, Kubernetes, or security!"
                 st.write("**AI Response:**", answer)
-        else:
-            st.warning("Please enter a question.")
+         else:
+             st.warning("Please enter a question.")
+
+# Footer
+st.markdown("""
+<hr style="margin-top: 50px;">
+<footer style="text-align: center; padding: 20px; color: #666; font-size: 14px;">
+    <p>&copy; 2024 Hazem Soussi. All rights reserved.</p>
+    <p>Built with ❤️ using Streamlit | <a href="https://github.com/hazem-soussi-HA" target="_blank">GitHub</a> | <a href="https://www.linkedin.com/in/hazem-soussi" target="_blank">LinkedIn</a></p>
+</footer>
+""", unsafe_allow_html=True)
