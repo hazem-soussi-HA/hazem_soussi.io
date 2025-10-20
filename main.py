@@ -8,6 +8,7 @@ import plotly.graph_objects as go
 
 API_BASE_URL = "http://localhost:8000"
 
+
 def fetch_data(endpoint):
     try:
         response = requests.get(f"{API_BASE_URL}{endpoint}")
@@ -16,7 +17,9 @@ def fetch_data(endpoint):
     except:
         return None
 
-st.set_page_config(page_title="Cloud Computing & DevSecOps Specialist", page_icon="🚀", layout="wide")
+
+st.set_page_config(
+    page_title="Cloud Computing & DevSecOps Specialist", page_icon="🚀", layout="wide")
 
 # Global Typography
 st.markdown("""
@@ -32,12 +35,14 @@ body, .stApp {
 if 'dark_mode' not in st.session_state:
     st.session_state.dark_mode = False
 
-dark_mode = st.sidebar.checkbox("🌙 Dark Mode", value=st.session_state.dark_mode)
+dark_mode = st.sidebar.checkbox(
+    "🌙 Dark Mode", value=st.session_state.dark_mode)
 st.session_state.dark_mode = dark_mode
 
 # Sidebar Navigation
 st.sidebar.title("Navigation")
-page = st.sidebar.radio("Go to", ["Home", "About", "Skills", "Projects", "Experience", "Testimonials", "Contact", "AI Assistant"])
+page = st.sidebar.radio("Go to", ["Home", "About", "Skills", "Projects",
+                        "Experience", "Testimonials", "Contact", "AI Assistant"])
 
 # Fun button
 if st.sidebar.button("🎉 Surprise!"):
@@ -195,7 +200,8 @@ if page == "About":
 
 if page == "Skills":
     st.header("🚀 Expertise & Skills")
-    tab1, tab2, tab3 = st.tabs(["Cloud Computing", "DevSecOps", "Full-Stack Development"])
+    tab1, tab2, tab3 = st.tabs(
+        ["Cloud Computing", "DevSecOps", "Full-Stack Development"])
 
     with tab1:
         st.subheader("Cloud Computing")
@@ -206,9 +212,11 @@ if page == "Skills":
 
         # Skills chart
         fig = go.Figure(data=[go.Bar(
-            x=['AWS', 'Azure', 'GCP', 'Terraform', 'CloudFormation', 'Serverless'],
+            x=['AWS', 'Azure', 'GCP', 'Terraform',
+                'CloudFormation', 'Serverless'],
             y=[95, 90, 85, 90, 85, 88],
-            marker_color=['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F']
+            marker_color=['#FF6B6B', '#4ECDC4', '#45B7D1',
+                          '#FFA07A', '#98D8C8', '#F7DC6F']
         )])
         fig.update_layout(
             title="Cloud Computing Skills Proficiency",
@@ -220,7 +228,8 @@ if page == "Skills":
         st.plotly_chart(fig, use_container_width=True)
 
         if st.button("Learn More", key="cloud_more"):
-            st.info("Hazem has deployed private and hybrid clouds, optimizing resources for scalability and cost-efficiency.")
+            st.info(
+                "Hazem has deployed private and hybrid clouds, optimizing resources for scalability and cost-efficiency.")
 
     with tab2:
         st.subheader("DevSecOps")
@@ -232,9 +241,11 @@ if page == "Skills":
 
         # Skills chart
         fig = go.Figure(data=[go.Bar(
-            x=['CI/CD Security', 'Vulnerability Scanning', 'Compliance', 'Container Security', 'Threat Modeling'],
+            x=['CI/CD Security', 'Vulnerability Scanning',
+                'Compliance', 'Container Security', 'Threat Modeling'],
             y=[90, 88, 85, 92, 87],
-            marker_color=['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8']
+            marker_color=['#FF6B6B', '#4ECDC4',
+                          '#45B7D1', '#FFA07A', '#98D8C8']
         )])
         fig.update_layout(
             title="DevSecOps Skills Proficiency",
@@ -246,7 +257,8 @@ if page == "Skills":
         st.plotly_chart(fig, use_container_width=True)
 
         if st.button("Learn More", key="devsecops_more"):
-            st.info("Integrating security from the start, Hazem ensures robust, compliant infrastructures.")
+            st.info(
+                "Integrating security from the start, Hazem ensures robust, compliant infrastructures.")
 
     with tab3:
         st.subheader("Full-Stack Development")
@@ -259,7 +271,8 @@ if page == "Skills":
         fig = go.Figure(data=[go.Bar(
             x=['React', 'Node.js', 'Python', 'MongoDB', 'PostgreSQL', 'Git'],
             y=[85, 88, 90, 87, 85, 95],
-            marker_color=['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F']
+            marker_color=['#FF6B6B', '#4ECDC4', '#45B7D1',
+                          '#FFA07A', '#98D8C8', '#F7DC6F']
         )])
         fig.update_layout(
             title="Full-Stack Development Skills Proficiency",
@@ -271,7 +284,8 @@ if page == "Skills":
         st.plotly_chart(fig, use_container_width=True)
 
         if st.button("Learn More", key="fullstack_more"):
-            st.info("From interactive UIs to scalable backends, Hazem builds end-to-end solutions.")
+            st.info(
+                "From interactive UIs to scalable backends, Hazem builds end-to-end solutions.")
 
 if page == "Projects":
     st.header("💼 Featured Projects")
@@ -302,9 +316,11 @@ if page == "Projects":
     ]
 
     # Search functionality
-    search_term = st.text_input("Search projects by title or technology:", placeholder="e.g., React, AWS, Kubernetes")
+    search_term = st.text_input(
+        "Search projects by title or technology:", placeholder="e.g., React, AWS, Kubernetes")
     if search_term:
-        filtered_projects = [p for p in projects if search_term.lower() in p['title'].lower() or search_term.lower() in p['tech'].lower()]
+        filtered_projects = [p for p in projects if search_term.lower(
+        ) in p['title'].lower() or search_term.lower() in p['tech'].lower()]
     else:
         filtered_projects = projects
 
@@ -451,19 +467,24 @@ if page == "Contact":
         if os.path.exists(cv_path):
             with open(cv_path, "rb") as f:
                 cv_data = f.read()
-            st.download_button("📄 Download CV", cv_data, file_name="Hazem_Soussi_CV.docx")
+            st.download_button("📄 Download CV", cv_data,
+                               file_name="Hazem_Soussi_CV.docx")
     with col2:
-        st.markdown('<div class="contact-card"><h3>Send a Message</h3>', unsafe_allow_html=True)
+        st.markdown(
+            '<div class="contact-card"><h3>Send a Message</h3>', unsafe_allow_html=True)
         with st.form("contact_form"):
             name = st.text_input("Your Name", placeholder="Enter your name")
             email = st.text_input("Your Email", placeholder="Enter your email")
-            subject = st.selectbox("Subject", ["General Inquiry", "Project Collaboration", "DevSecOps Consulting", "Cloud Architecture"])
-            message = st.text_area("Message", placeholder="Tell me about your project...")
+            subject = st.selectbox("Subject", [
+                                   "General Inquiry", "Project Collaboration", "DevSecOps Consulting", "Cloud Architecture"])
+            message = st.text_area(
+                "Message", placeholder="Tell me about your project...")
             submitted = st.form_submit_button("🚀 Send Message")
             if submitted:
                 if name and email and message:
                     # Send email
-                    sender_email = os.environ.get("EMAIL_USER", "hazem.soussi@gmail.com")
+                    sender_email = os.environ.get(
+                        "EMAIL_USER", "hazem.soussi@gmail.com")
                     sender_password = os.environ.get("EMAIL_PASS")
                     receiver_email = "hazem.soussi@gmail.com"
 
@@ -483,12 +504,14 @@ if page == "Contact":
                             text = msg.as_string()
                             server.sendmail(sender_email, receiver_email, text)
                             server.quit()
-                            st.success("Thank you! Your message has been sent. I'll get back to you soon.")
+                            st.success(
+                                "Thank you! Your message has been sent. I'll get back to you soon.")
                             st.balloons()
                         except Exception as e:
                             st.error(f"Failed to send email: {str(e)}")
                     else:
-                        st.success("Thank you! Your message has been recorded. (Email sending not configured)")
+                        st.success(
+                            "Thank you! Your message has been recorded. (Email sending not configured)")
                         st.balloons()
                 else:
                     st.error("Please fill in all required fields.")
@@ -519,8 +542,8 @@ if page == "AI Assistant":
                 else:
                     answer = "Hazem is a Cloud Computing and DevOps Engineer specializing in scalable infrastructures, automation, and security. For specific questions about his skills, projects, or experience, try asking about cloud, DevOps, Kubernetes, or security!"
                 st.write("**AI Response:**", answer)
-         else:
-             st.warning("Please enter a question.")
+        else:
+            st.warning("Please enter a question.")
 
 # Footer
 st.markdown("""
