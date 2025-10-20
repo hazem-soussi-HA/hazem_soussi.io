@@ -142,15 +142,12 @@ if page == "Projects":
         }
     ]
     
-    for i in range(0, len(projects), 2):
-        col1, col2 = st.columns(2)
-        for j, proj in enumerate(projects[i:i+2]):
-            with [col1, col2][j]:
-                with st.expander(f"🔧 {proj['title']}"):
-                    st.write(proj['desc'])
-                    st.write(f"**Technologies:** {proj['tech']}")
-                    if proj['link'] != "#":
-                        st.link_button("View on GitHub", proj['link'], key=f"link_{i+j}")
+    for idx, proj in enumerate(projects):
+        with st.expander(f"🔧 {proj['title']}"):
+            st.write(proj['desc'])
+            st.write(f"**Technologies:** {proj['tech']}")
+            if proj['link'] != "#":
+                st.link_button("View on GitHub", proj['link'], key=f"link_{idx}")
 
 if page == "Experience":
     st.header("🏆 Certifications")
@@ -187,8 +184,9 @@ if page == "Contact":
         # Download CV
         cv_path = "Hazem Soussi.docx"
         if os.path.exists(cv_path):
-            with open(cv_path, "rb") as file:
-                st.download_button("📄 Download CV", file, file_name="Hazem_Soussi_CV.docx", mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+            with open(cv_path, "rb") as f:
+                cv_data = f.read()
+            st.download_button("📄 Download CV", cv_data, file_name="Hazem_Soussi_CV.docx", mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document")
     with col2:
         st.subheader("Send a Message")
         with st.form("contact_form"):
