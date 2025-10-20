@@ -257,7 +257,7 @@ if page == "Projects":
             </div>
             """, unsafe_allow_html=True)
             if proj['link'] != "#":
-                st.link_button("View on GitHub", proj['link'], key=f"proj_{idx}")
+                st.link_button("View on GitHub", proj['link'])
 
 if page == "Experience":
     st.header("🏆 Certifications")
@@ -392,15 +392,10 @@ if page == "Contact":
     with col2:
         st.markdown('<div class="contact-card"><h3>Send a Message</h3>', unsafe_allow_html=True)
         with st.form("contact_form"):
-            st.markdown('<div class="form-input">', unsafe_allow_html=True)
-            name = st.text_input("Your Name", placeholder="Enter your name", label_visibility="collapsed")
-            st.markdown('</div><div class="form-input">', unsafe_allow_html=True)
-            email = st.text_input("Your Email", placeholder="Enter your email", label_visibility="collapsed")
-            st.markdown('</div><div class="form-input">', unsafe_allow_html=True)
-            subject = st.selectbox("Subject", ["General Inquiry", "Project Collaboration", "DevSecOps Consulting", "Cloud Architecture"], label_visibility="collapsed")
-            st.markdown('</div><div class="form-input">', unsafe_allow_html=True)
-            message = st.text_area("Message", placeholder="Tell me about your project...", label_visibility="collapsed")
-            st.markdown('</div>', unsafe_allow_html=True)
+            name = st.text_input("Your Name", placeholder="Enter your name")
+            email = st.text_input("Your Email", placeholder="Enter your email")
+            subject = st.selectbox("Subject", ["General Inquiry", "Project Collaboration", "DevSecOps Consulting", "Cloud Architecture"])
+            message = st.text_area("Message", placeholder="Tell me about your project...")
             submitted = st.form_submit_button("🚀 Send Message")
             if submitted:
                 if name and email and message:
