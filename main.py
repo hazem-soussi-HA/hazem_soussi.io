@@ -15,7 +15,7 @@ def fetch_data(endpoint):
     except:
         return None
 
-st.set_page_config(page_title="Hazem Soussi - Cloud & DevSecOps Portfolio", page_icon="🚀", layout="wide")
+st.set_page_config(page_title="Cloud Computing & DevSecOps Specialist", page_icon="🚀", layout="wide")
 
 # Dark Mode Toggle
 if 'dark_mode' not in st.session_state:
